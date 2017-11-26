@@ -1,0 +1,19 @@
+{
+  "name": "GameBoX",
+  "private": true,
+  "dependencies": {
+    "@rails/webpacker": "^3.0.2",
+    "axios": "^0.15.3",
+    "bootstrap": "^4.0.0-alpha.6",
+    "bootstrap-vue": "^0.18.0",
+    "coffeescript": "1.12.7",
+    "vue": "^2.5.8",
+    "vue-loader": "^13.5.0",
+    "vue-router": "^2.8.1",
+    "vue-template-compiler": "^2.5.8"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "^2.9.4",
+    "webpack-merge": "^4.1.1"
+  }
+}
