@@ -1,6 +1,6 @@
 <template>
-  <nav class="navbar navbar-expand-md navbar-light bg-primary">
-  	<ul class="navbar-nav mr-auto">
+  <nav class="navbar navbar-expand-sm navbar-light">
+  	<ul class="navbar-nav mx-auto">
   		<li class="nav-item">
         <router-link :to="{name: 'Dashboard'}" class="nav-link">Dashboard</router-link>
   		</li>

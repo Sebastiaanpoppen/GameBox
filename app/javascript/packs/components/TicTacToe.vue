@@ -1,77 +1,59 @@
 <template>
-<div class="container-fluid">
-  <div class="row margin-tp-100">
-    <div class="col-sm-12">
-      <div v-for="i in Math.ceil(Object.keys(squares).length / 3)" class="row justify-content-center">
-        <div v-for="square in Object.keys(squares).slice((i-1) * 3, i * 3)" v-bind:class="{active: isActive}" @click="squareClicked(square)" class="col-sm-4 squared">
-          <div class="clicked-square">
-            <div class="square-letter">
-              {{squares[square]}}
+  <div class="container h-100">
+    <div class="row margin-tp-75">
+      <div class="col-sm-12">
+        <div v-for="i in Math.ceil(Object.keys(squares).length / 3)" class="row justify-content-center">
+          <div v-for="square in Object.keys(squares).slice((i-1) * 3, i * 3)" v-bind:class="{active: isActive}" @click="squareClicked(square)" class="col-sm-4 squared">
+            <div class="clicked-square">
+              <div class="square-letter">
+                {{squares[square]}}
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="row margin-tp-50">
-    <div class="col-sm-12">
-      <div v-if="!winner" class="row justify-content-center">
-        <h1>Current Player: {{playerTurn}}</h1>
+    <div class="row margin-tp-50">
+      <div class="col-sm-12" v-if="!winner">
+          <h1 class="text-center">Current Player: {{playerTurn}}</h1>
+      </div>
+      <div v-if="winner" class="col-sm-12">
+          <h1 class="text-center">The winner is player: {{winner}}</h1>
+      </div>
+      <div class="col-sm-12 center">
+          <button class="btn btn-primary text-center" @click="resetGame()">New Game</button>
+      </div>
+    </div>
+    <div class="row margin-tp-50">
+      <div class="col-12 center">
+          <h1 class="text-center">Score:</h1>
+      </div>
+      <div class="col-12 center">
+          Player One: {{players["One"].score}}
+        </div>
+      <div class="col-12 center">
+          Player Two: {{players["Two"].score}}
       </div>
     </div>
   </div>
-  <div class="row">
-    <div v-if="winner" class="col-sm-12">
-      <div class="row justify-content-center">
-        <h1>The winner is player: {{winner}}</h1>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="row justify-content-center">
-        <button class="btn btn-primary" @click="resetGame()">New Game</button>
-      </div>
-    </div>
-  </div>
-  <div class="row margin-tp-50 justify-content-center">
-    <div class="col-sm-12">
-      <div class="row justify-content-center">
-        <h1>Score</h1>
-      </div>
-    </div>
-    <div class="col-sm-12">
-      <div class="row justify-content-center">
-        Player One: {{playerScore["One"]}}
-      </div>
-    </div>
-    <div class="col-sm-12">
-      <div class="row justify-content-center">
-        Player Two: {{playerScore["Two"]}}
-      </div>
-    </div>
-  </div>
-</div>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      playerTurn: "Two",
-      SquaresClickedPlayer: {
-        One: [],
-        Two: [],
-      },
-      SquaresClickedPlayerOne: [],
-      SquaresClickedPlayerTwo: [],
-      playerScore: {
-        One: 0,
-        Two: 0,
-      },
-
-      winner: "",
       isActive: false,
+      playerTurn: "Two",
+      players: {
+        One: {
+          score: 0,
+          squaresClicked: [],
+        },
+        Two: {
+          score: 0,
+          squaresClicked: [],
+        },
+      },
       squares: {
         1: "",
         2: "",
@@ -92,7 +74,8 @@ export default {
         [3, 6, 9],
         [1, 5, 9],
         [3, 5, 7],
-      ]
+      ],
+      winner: "",
     }
   },
   methods: {
@@ -100,8 +83,8 @@ export default {
       this.winner = "";
       this.playerTurn = (this.playerTurn === "Two") ? "One" : "Two";
       this.squares[number] = (this.playerTurn === "One") ? "X" : "O";
-      this.SquaresClickedPlayer[this.playerTurn].push(number);
-      this.checkScore(this.SquaresClickedPlayer[this.playerTurn]);
+      this.players[this.playerTurn].squaresClicked.push(number)
+      this.checkScore(this.players[this.playerTurn].squaresClicked);
     },
     checkScore(playerSquaresClicked) {
       const playerSquaresClickedNumbers = playerSquaresClicked.map(Number);
@@ -114,7 +97,7 @@ export default {
         })
         if (!scoreArray.includes(false)) {
           this.winner = this.playerTurn;
-          this.playerScore[this.playerTurn] += +1;
+          this.players[this.playerTurn].score += +1;
         }
       })
     },
@@ -123,8 +106,8 @@ export default {
         this.squares[key] = "";
       })
       this.winner = "";
-      this.SquaresClickedPlayer["One"] = [];
-      this.SquaresClickedPlayer["Two"] = [];
+      this.players["One"].squaresClicked = [];
+      this.players["Two"].squaresClicked = [];
     }
   },
 };
